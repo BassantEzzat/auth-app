@@ -1,0 +1,666 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #0b0b1a;
+  --card: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.12);
+  --text: #f1f1fb;
+  --muted: #a3a3c2;
+  --primary: #7c5cff;
+  --primary-2: #38bdf8;
+  --danger: #ff6b81;
+  --success: #34d399;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ---------- Page transitions (View Transitions API) ---------- */
+::view-transition-old(root) {
+  animation: 250ms ease both page-out;
+}
+::view-transition-new(root) {
+  animation: 400ms cubic-bezier(0.2, 0.8, 0.2, 1) both page-in;
+}
+
+/* ---------- Auth layout ---------- */
+.auth-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: max(clamp(16px, 4vw, 24px), env(safe-area-inset-top))
+    max(clamp(16px, 4vw, 24px), env(safe-area-inset-right))
+    max(clamp(16px, 4vw, 24px), env(safe-area-inset-bottom))
+    max(clamp(16px, 4vw, 24px), env(safe-area-inset-left));
+  position: relative;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  pointer-events: none;
+  animation: float 12s ease-in-out infinite;
+}
+.blob-1 {
+  width: clamp(240px, 50vw, 420px);
+  height: clamp(240px, 50vw, 420px);
+  background: var(--primary);
+  top: -120px;
+  left: -100px;
+}
+.blob-2 {
+  width: clamp(220px, 45vw, 380px);
+  height: clamp(220px, 45vw, 380px);
+  background: var(--primary-2);
+  bottom: -120px;
+  right: -80px;
+  animation-delay: -6s;
+}
+
+.auth-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  padding: clamp(26px, 6vw, 40px) clamp(20px, 5vw, 36px);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: clamp(20px, 4vw, 24px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.6);
+  animation: card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+  h1 {
+    margin: 18px 0 6px;
+    font-size: clamp(1.5rem, 5vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .subtitle {
+    margin: 0 0 26px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 14px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  box-shadow: 0 10px 30px -8px rgba(124, 92, 255, 0.7);
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* ---------- Form ---------- */
+.field {
+  margin-bottom: 18px;
+  animation: fade-up 0.5s both;
+
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.17s; }
+  &:nth-child(3) { animation-delay: 0.24s; }
+  &:nth-child(4) { animation-delay: 0.31s; }
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  input {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    font: inherit;
+    font-size: 16px; /* يمنع الـ zoom التلقائي على iPhone */
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+
+    &::placeholder {
+      color: #6f6f92;
+    }
+    &:focus {
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.2);
+    }
+  }
+
+  &.invalid input {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 4px rgba(255, 107, 129, 0.12);
+  }
+}
+
+.input-wrap {
+  position: relative;
+}
+.has-toggle input {
+  padding-right: 52px;
+}
+.toggle {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--text);
+  }
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.error {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--danger);
+  animation: slide-down 0.25s ease both;
+}
+
+.alert {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #ffd0d8;
+  background: rgba(255, 107, 129, 0.12);
+  border: 1px solid rgba(255, 107, 129, 0.4);
+  border-radius: 12px;
+  animation: slide-down 0.3s ease both;
+}
+
+.btn {
+  width: 100%;
+  min-height: 50px;
+  margin-top: 6px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px -10px rgba(124, 92, 255, 0.7);
+  transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 34px -10px rgba(124, 92, 255, 0.9);
+  }
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.switch {
+  margin: 24px 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+
+  a {
+    color: #b7a6ff;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 4px 2px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* ---------- Password strength ---------- */
+.strength {
+  margin-top: 12px;
+  animation: slide-down 0.3s ease both;
+}
+.strength-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+
+  span {
+    height: 5px;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: background 0.3s;
+  }
+}
+.strength[data-level='1'] .strength-bar span:nth-child(-n + 1) { background: #ff6b81; }
+.strength[data-level='2'] .strength-bar span:nth-child(-n + 2) { background: #fbbf24; }
+.strength[data-level='3'] .strength-bar span:nth-child(-n + 3) { background: #38bdf8; }
+.strength[data-level='4'] .strength-bar span { background: #34d399; }
+
+.strength-label {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.rules {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+  font-size: 0.78rem;
+  color: var(--muted);
+
+  li {
+    transition: color 0.25s;
+    &::before {
+      content: '○';
+      margin-right: 6px;
+    }
+    &.ok {
+      color: var(--success);
+      &::before {
+        content: '✓';
+      }
+    }
+  }
+}
+
+/* ---------- Animations ---------- */
+.shake {
+  animation: shake 0.45s ease;
+}
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, 40px); }
+}
+@keyframes page-out {
+  to { opacity: 0; transform: scale(0.98); }
+}
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(16px); }
+}
+
+/* ---------- Responsive ---------- */
+
+/* موبايل صغير */
+@media (max-width: 380px) {
+  .rules {
+    grid-template-columns: 1fr;
+  }
+  .auth-card .subtitle {
+    margin-bottom: 20px;
+  }
+  .field {
+    margin-bottom: 16px;
+  }
+}
+
+/* موبايل في الوضع الأفقي أو شاشات قصيرة */
+@media (max-height: 640px) {
+  .auth-page {
+    place-items: start center;
+  }
+  .auth-card {
+    margin: 8px 0;
+  }
+}
+
+/* تابلت وأكبر: الكارت أعرض شوية */
+@media (min-width: 768px) {
+  .auth-card {
+    max-width: 480px;
+  }
+}
+
+/* شاشات كبيرة */
+@media (min-width: 1200px) {
+  .blob {
+    filter: blur(100px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Compact auth form (يشيل السكرول على شاشات الديسكتوب/اللابتوب) ---------- */
+@media (min-width: 768px) and (max-height: 960px) {
+  .auth-page {
+    padding-block: 16px;
+  }
+
+  .auth-card {
+    padding: 26px 34px;
+
+    h1 {
+      margin: 12px 0 4px;
+      font-size: 1.55rem;
+    }
+    .subtitle {
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+    }
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .field {
+    margin-bottom: 12px;
+
+    label {
+      margin-bottom: 4px;
+      font-size: 0.8rem;
+    }
+    input {
+      min-height: 44px;
+      padding: 10px 14px;
+    }
+  }
+
+  .toggle {
+    width: 38px;
+    height: 38px;
+  }
+
+  .btn {
+    min-height: 46px;
+    padding: 12px;
+    margin-top: 2px;
+  }
+
+  .switch {
+    margin-top: 16px;
+  }
+
+  .alert {
+    margin-bottom: 12px;
+    padding: 10px 12px;
+  }
+
+  /* مؤشر قوة الباسورد أصغر */
+  .strength {
+    margin-top: 8px;
+  }
+  .strength-label {
+    margin-top: 4px;
+  }
+  .rules {
+    margin-top: 6px;
+    gap: 2px 12px;
+  }
+}
+
+/* لابتوبات قصيرة (ارتفاع أقل من 760px): شيلي الـ subtitle كمان */
+@media (min-width: 768px) and (max-height: 760px) {
+  .auth-card {
+    padding: 22px 32px;
+
+    .subtitle {
+      display: none;
+    }
+    h1 {
+      margin-bottom: 14px;
+    }
+  }
+  .field {
+    margin-bottom: 10px;
+  }
+  .switch {
+    margin-top: 12px;
+  }
+}/* ---------- Compact auth form: موبايلات وتابلت صغير ---------- */
+@media (max-width: 767px) {
+  .auth-page {
+    place-items: start center; /* الكارت يبدأ من فوق بدل الوسط عشان ماينقصش من فوق */
+    padding-block: 14px;
+  }
+
+  .auth-card {
+    padding: 22px 18px;
+    border-radius: 20px;
+
+    h1 {
+      margin: 10px 0 2px;
+      font-size: 1.4rem;
+    }
+    .subtitle {
+      margin-bottom: 14px;
+      font-size: 0.85rem;
+    }
+  }
+
+  .logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+
+    svg {
+      width: 19px;
+      height: 19px;
+    }
+  }
+
+  .field {
+    margin-bottom: 11px;
+
+    label {
+      margin-bottom: 4px;
+      font-size: 0.78rem;
+    }
+    input {
+      min-height: 44px;
+      padding: 9px 13px;
+      font-size: 16px; /* لازم يفضل 16px عشان iPhone ماعملش zoom */
+    }
+  }
+
+  .has-toggle input {
+    padding-right: 46px;
+  }
+  .toggle {
+    width: 38px;
+    height: 38px;
+    right: 3px;
+  }
+
+  .error {
+    margin-top: 4px;
+    font-size: 0.75rem;
+  }
+
+  .alert {
+    margin-bottom: 11px;
+    padding: 9px 12px;
+    font-size: 0.85rem;
+  }
+
+  .btn {
+    min-height: 46px;
+    padding: 11px;
+    margin-top: 2px;
+  }
+
+  .switch {
+    margin-top: 14px;
+    font-size: 0.85rem;
+  }
+
+  /* مؤشر قوة الباسورد */
+  .strength {
+    margin-top: 8px;
+  }
+  .strength-bar span {
+    height: 4px;
+  }
+  .strength-label {
+    margin-top: 4px;
+    font-size: 0.72rem;
+  }
+  .rules {
+    margin-top: 6px;
+    gap: 2px 10px;
+    grid-template-columns: 1fr 1fr; /* يفضلوا عمودين حتى على الشاشات الصغيرة */
+    font-size: 0.72rem;
+  }
+
+  /* الـ blobs أخف على الموبايل */
+  .blob {
+    filter: blur(60px);
+    opacity: 0.4;
+  }
+}
+
+/* موبايلات صغيرة جداً (عرض أقل من 360px) */
+@media (max-width: 359px) {
+  .auth-page {
+    padding-inline: 10px;
+  }
+  .auth-card {
+    padding: 20px 14px;
+  }
+  .rules {
+    font-size: 0.68rem;
+    gap: 2px 6px;
+  }
+}
+
+/* موبايل في الوضع الأفقي أو أي شاشة ارتفاعها قصير */
+@media (max-width: 767px) and (max-height: 700px) {
+  .auth-card {
+    .subtitle {
+      display: none;
+    }
+    h1 {
+      margin-bottom: 12px;
+    }
+  }
+  .field {
+    margin-bottom: 9px;
+  }
+  .switch {
+    margin-top: 10px;
+  }
+}
+
+
+/* ---------- توسيط الكارت عمودياً على الموبايل ---------- */
+@media (max-width: 767px) {
+  .auth-page {
+    place-items: center;
+  }
+  .auth-card {
+    margin: 0;
+  }
+}

@@ -1,0 +1,198 @@
+.home {
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+  overflow: hidden;
+}
+
+.topbar {
+  position: relative;
+  z-index: 2;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: max(clamp(14px, 3vw, 22px), env(safe-area-inset-top))
+    max(clamp(16px, 4vw, 24px), env(safe-area-inset-right))
+    clamp(14px, 3vw, 22px)
+    max(clamp(16px, 4vw, 24px), env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  animation: slide-down 0.5s ease both;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  .brand-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+}
+
+.btn-ghost {
+  min-height: 42px;
+  padding: 10px 18px;
+  font: inherit;
+  font-weight: 500;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s, border-color 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: clamp(16px, 5vw, 40px) max(clamp(16px, 4vw, 24px), env(safe-area-inset-right))
+    max(clamp(48px, 8vw, 80px), env(safe-area-inset-bottom))
+    max(clamp(16px, 4vw, 24px), env(safe-area-inset-left));
+}
+
+.hero {
+  text-align: center;
+  padding: clamp(20px, 5vw, 40px) 0 20px;
+
+  > * {
+    animation: fade-up 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .avatar { animation-delay: 0.1s; }
+  .greeting { animation-delay: 0.2s; }
+  h1 { animation-delay: 0.3s; }
+  .lead { animation-delay: 0.4s; }
+}
+
+.avatar {
+  width: clamp(76px, 22vw, 96px);
+  height: clamp(76px, 22vw, 96px);
+  margin: 0 auto 22px;
+  display: grid;
+  place-items: center;
+  font-size: clamp(1.6rem, 6vw, 2rem);
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  border-radius: 50%;
+  box-shadow: 0 0 0 6px rgba(124, 92, 255, 0.18), 0 20px 50px -10px rgba(124, 92, 255, 0.7);
+}
+
+.greeting {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+h1 {
+  margin: 0 0 14px;
+  font-size: clamp(1.8rem, 7vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.gradient {
+  background: linear-gradient(135deg, #b7a6ff, var(--primary-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.lead {
+  max-width: 520px;
+  margin: 0 auto;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: clamp(0.92rem, 2.6vw, 1rem);
+}
+
+.cards {
+  margin-top: clamp(28px, 6vw, 48px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: clamp(12px, 2.5vw, 18px);
+}
+
+.card {
+  min-width: 0;
+  padding: clamp(18px, 4vw, 22px) clamp(18px, 4vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  animation: fade-up 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba(124, 92, 255, 0.5);
+    box-shadow: 0 20px 40px -20px rgba(124, 92, 255, 0.5);
+  }
+}
+
+.card-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.card-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* موبايل صغير */
+@media (max-width: 420px) {
+  .brand .brand-name {
+    font-size: 1rem;
+  }
+  .btn-ghost {
+    padding: 9px 14px;
+    font-size: 0.9rem;
+  }
+  .card-value {
+    font-size: 1rem;
+  }
+}
+
+/* لمس: لغي الـ hover lift على الأجهزة اللي مفيهاش hover */
+@media (hover: none) {
+  .card:hover,
+  .btn-ghost:hover {
+    transform: none;
+  }
+}

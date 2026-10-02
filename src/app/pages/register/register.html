@@ -1,0 +1,147 @@
+<main class="auth-page">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <section class="auth-card">
+    <div class="logo">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <line x1="19" y1="8" x2="19" y2="14" />
+        <line x1="22" y1="11" x2="16" y2="11" />
+      </svg>
+    </div>
+    <h1>Create your account</h1>
+    <p class="subtitle">It only takes a minute to get started</p>
+
+    @if (serverError()) {
+      <div class="alert" role="alert">{{ serverError() }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" [class.shake]="shake()" novalidate>
+      <div class="field" [class.invalid]="name.touched && name.invalid">
+        <label for="name">Full name</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Your name"
+          autocomplete="name"
+        />
+        @if (name.touched && name.hasError('required')) {
+          <small class="error">Name is required</small>
+        } @else if (name.touched && name.hasError('minlength')) {
+          <small class="error">Name must be at least 2 characters</small>
+        } @else if (name.touched && name.hasError('maxlength')) {
+          <small class="error">Name must be 40 characters or less</small>
+        } @else if (name.touched && name.hasError('pattern')) {
+          <small class="error">Name can only contain letters and spaces</small>
+        }
+      </div>
+
+      <div class="field" [class.invalid]="email.touched && email.invalid">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+        />
+        @if (email.touched && email.hasError('required')) {
+          <small class="error">Email is required</small>
+        } @else if (email.touched && email.hasError('pattern')) {
+          <small class="error">Enter a valid email address</small>
+        } @else if (email.hasError('emailTaken')) {
+          <small class="error">This email is already registered</small>
+        }
+      </div>
+
+      <div class="field" [class.invalid]="password.touched && password.invalid">
+        <label for="password">Password</label>
+        <div class="input-wrap has-toggle">
+          <input
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Create a strong password"
+            autocomplete="new-password"
+          />
+          <button
+            type="button"
+            class="toggle"
+            (click)="showPassword.set(!showPassword())"
+            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+              @if (!showPassword()) {
+                <line x1="3" y1="3" x2="21" y2="21" />
+              }
+            </svg>
+          </button>
+        </div>
+
+        @if (password.touched && password.hasError('required')) {
+          <small class="error">Password is required</small>
+        }
+
+        @if (password.value) {
+          <div class="strength" [attr.data-level]="level()">
+            <div class="strength-bar"><span></span><span></span><span></span><span></span></div>
+            <div class="strength-label">Strength: {{ levelLabel() }}</div>
+            <ul class="rules">
+              @for (rule of rules(); track rule.label) {
+                <li [class.ok]="rule.ok">{{ rule.label }}</li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+
+      <div
+        class="field"
+        [class.invalid]="confirm.touched && (confirm.invalid || form.hasError('passwordsMismatch'))"
+      >
+        <label for="confirmPassword">Confirm password</label>
+        <input
+          id="confirmPassword"
+          [type]="showPassword() ? 'text' : 'password'"
+          formControlName="confirmPassword"
+          placeholder="Repeat your password"
+          autocomplete="new-password"
+        />
+        @if (confirm.touched && confirm.hasError('required')) {
+          <small class="error">Please confirm your password</small>
+        } @else if (confirm.touched && form.hasError('passwordsMismatch')) {
+          <small class="error">Passwords do not match</small>
+        }
+      </div>
+
+      <button class="btn" type="submit" [disabled]="loading()">
+        @if (loading()) {
+          <span class="spinner"></span> Creating account…
+        } @else {
+          Create account
+        }
+      </button>
+    </form>
+
+    <p class="switch">Already have an account? <a routerLink="/login">Sign in</a></p>
+  </section>
+</main>
